@@ -41,13 +41,10 @@ struct TabAView: View {
                             ProgressView()
                         }
                         Text(pokemon.name)
-                        NavigationLink(destination: Text(pokemon.name)) {
+                        NavigationLink(destination: PokeDetailView(pokemon: pokemon)) {
                             
                         }
                     }
-                    //                    .onTapGesture {
-                    //                        print("\(pokemon.name)がタップされたよ")
-                    //                    }
                 }.navigationBarTitle("一覧")
             }.onAppear {
                 Task {
@@ -60,6 +57,29 @@ struct TabAView: View {
 struct TabBView: View {
     var body: some View {
         Text("TabB")
+    }
+}
+
+struct PokeDetailView: View {
+    let pokemon: Pokemon
+    var body: some View {
+        Text("No. \(pokemon.id)")
+            .font(.title)
+            .fontWeight(.semibold)
+        AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 200)
+        } placeholder: {
+            ProgressView()
+        }
+        Text(pokemon.name)
+            .font(.body)
+            .fontWeight(.bold)
+        Text("\(pokemon.types[0].type.name)タイプ")
+            .font(.body)
+            .fontWeight(.bold)
     }
 }
 
