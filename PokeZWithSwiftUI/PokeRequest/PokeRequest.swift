@@ -18,7 +18,7 @@ final class PokeRequest: ObservableObject {
     
     func fetchPokemonData() async -> [Pokemon]? {
         print(#function, 1)
-        let id = 200
+        let id = 10
         var urlList: [URL] = []
         for i in 1..<id {
             guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(i)/") else { return nil }
