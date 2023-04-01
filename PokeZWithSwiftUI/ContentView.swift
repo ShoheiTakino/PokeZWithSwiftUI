@@ -18,18 +18,27 @@ struct ContentView: View {
                 }
             }
             .padding()
-            List(pokeData.pokemonList) { pokemon in
-                HStack {
-                    AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 40)
-                    } placeholder: {
-                        ProgressView()
+            NavigationView {
+                List(pokeData.pokemonList) { pokemon in
+                    HStack {
+                        
+                        AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 40)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        Text(pokemon.name)
+                        NavigationLink(destination: Text(pokemon.name)) {
+                            
+                        }
                     }
-                    Text(pokemon.name)
-                }
+//                    .onTapGesture {
+//                        print("\(pokemon.name)がタップされたよ")
+//                    }
+                }.navigationBarTitle("一覧")
             }
         }
         .padding()
