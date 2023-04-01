@@ -8,16 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    var body: some View {
+        TabView {
+            TabAView()
+                .tabItem {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("PokopokeList")
+                }
+            TabBView()
+                .tabItem {
+                    Image(systemName: "pencil.circle")
+                    Text("Nanmonai")
+                }
+        }
+    }
+}
+
+struct TabAView: View {
     @StateObject var pokeData = PokeRequest()
     var body: some View {
-        VStack {
-            Button("テキスト") {
-                // ボタンがタップされたときのアクション
-                Task {
-                    await pokeData.fetchPokemonData()
-                }
-            }
-            .padding()
             NavigationView {
                 List(pokeData.pokemonList) { pokemon in
                     HStack {
@@ -35,13 +45,21 @@ struct ContentView: View {
                             
                         }
                     }
-//                    .onTapGesture {
-//                        print("\(pokemon.name)がタップされたよ")
-//                    }
+                    //                    .onTapGesture {
+                    //                        print("\(pokemon.name)がタップされたよ")
+                    //                    }
                 }.navigationBarTitle("一覧")
-            }
+            }.onAppear {
+                Task {
+                    await pokeData.fetchPokemonData()
+                }
         }
-        .padding()
+    }
+}
+
+struct TabBView: View {
+    var body: some View {
+        Text("TabB")
     }
 }
 
