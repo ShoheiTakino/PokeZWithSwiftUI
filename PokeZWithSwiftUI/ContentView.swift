@@ -11,9 +11,25 @@ struct ContentView: View {
     @StateObject var pokeData = PokeRequest()
     var body: some View {
         VStack {
-            
-            Task {
-                await pokeData.fetchPokemonData()
+            Button("テキスト") {
+                // ボタンがタップされたときのアクション
+                Task {
+                    await pokeData.fetchPokemonData()
+                }
+            }
+            .padding()
+            List(pokeData.pokemonList) { pokemon in
+                HStack {
+                    AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 40)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    Text(pokemon.name)
+                }
             }
         }
         .padding()
