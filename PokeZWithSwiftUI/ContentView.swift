@@ -45,7 +45,7 @@ struct TabAView: View {
                             
                         }
                     }
-                }.navigationBarTitle("一覧")
+                }.navigationBarTitle("一覧(List)")
             }.onAppear {
                 Task {
                     await pokeData.fetchPokemonData()
@@ -59,38 +59,60 @@ struct TabBView: View {
     @StateObject var pokeData = PokeRequest()
     var pokemonList: [Pokemon] = []
     var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 10, alignment: .center), count: 2)
+    let screenWidth = UIScreen.main.bounds.width
     var body: some View {
-        
-        ScrollView(.vertical) {
-//            LazyVGrid(columns: columns) {
-//                ForEach((0...9), id: \.self) { index in
-//                    AsyncImage(url: URL(string: pokemonList[index].sprites.frontImage)) { image in
-//                        image
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(height: 40)
-//                    } placeholder: {
-//                        ProgressView()
-//                    }
-//                    NavigationLink(destination: PokeDetailView(pokemon: pokeData.pokemonList[index])) {
-//
-//                    }
-//                }
-//            }
-//            LazyVGrid(columns: columns) {
-//                AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
-//                    image
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-//                        .frame(height: 40)
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//                Text(pokemon.name)
-//                NavigationLink(destination: PokeDetailView(pokemon: pokemon)) {
-//
-//                }
-//            }
+        NavigationView {
+            ScrollView(.vertical) {
+                LazyVGrid(columns: columns) {
+                    ForEach((1...50), id: \.self) { index in
+                        
+                        NavigationLink {
+                            Text("こんにちは")
+                        } label: {
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: screenWidth / 2, height: screenWidth / 2)
+                        }
+
+                        NavigationLink {
+                            Text("こんにちは2")
+                        } label: {
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: screenWidth / 2, height: screenWidth / 2)
+                        }
+                    }
+                }
+                //            LazyVGrid(columns: columns) {
+                //                ForEach((0...9), id: \.self) { index in
+                //                    AsyncImage(url: URL(string: pokemonList[index].sprites.frontImage)) { image in
+                //                        image
+                //                            .resizable()
+                //                            .aspectRatio(contentMode: .fit)
+                //                            .frame(height: 40)
+                //                    } placeholder: {
+                //                        ProgressView()
+                //                    }
+                //                    NavigationLink(destination: PokeDetailView(pokemon: pokeData.pokemonList[index])) {
+                //
+                //                    }
+                //                }
+                //            }
+                //            LazyVGrid(columns: columns) {
+                //                AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
+                //                    image
+                //                        .resizable()
+                //                        .aspectRatio(contentMode: .fit)
+                //                        .frame(height: 40)
+                //                } placeholder: {
+                //                    ProgressView()
+                //                }
+                //                Text(pokemon.name)
+                //                NavigationLink(destination: PokeDetailView(pokemon: pokemon)) {
+                //
+                //                }
+                //            }
+            }.navigationBarTitle("一覧(GridLayout)")
         }.onAppear {
             Task {
                 await pokeData.fetchPokemonData()
