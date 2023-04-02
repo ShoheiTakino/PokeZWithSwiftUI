@@ -19,7 +19,7 @@ struct ContentView: View {
             TabBView()
                 .tabItem {
                     Image(systemName: "pencil.circle")
-                    Text("Nanmonai")
+                    Text("PokopokeCulom")
                 }
         }
     }
@@ -54,9 +54,52 @@ struct TabAView: View {
     }
 }
 
+
 struct TabBView: View {
+    @StateObject var pokeData = PokeRequest()
+    var pokemonList: [Pokemon] = []
+    var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 10, alignment: .center), count: 2)
     var body: some View {
-        Text("TabB")
+        
+        ScrollView(.vertical) {
+//            LazyVGrid(columns: columns) {
+//                ForEach((0...9), id: \.self) { index in
+//                    AsyncImage(url: URL(string: pokemonList[index].sprites.frontImage)) { image in
+//                        image
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(height: 40)
+//                    } placeholder: {
+//                        ProgressView()
+//                    }
+//                    NavigationLink(destination: PokeDetailView(pokemon: pokeData.pokemonList[index])) {
+//
+//                    }
+//                }
+//            }
+//            LazyVGrid(columns: columns) {
+//                AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
+//                    image
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .frame(height: 40)
+//                } placeholder: {
+//                    ProgressView()
+//                }
+//                Text(pokemon.name)
+//                NavigationLink(destination: PokeDetailView(pokemon: pokemon)) {
+//
+//                }
+//            }
+        }.onAppear {
+            Task {
+                await pokeData.fetchPokemonData()
+            }
+        }
+    }
+    mutating func getPokemon() async -> [Pokemon] {
+        await pokemonList =  pokeData.fetchPokemonData()!
+        return pokemonList
     }
 }
 
