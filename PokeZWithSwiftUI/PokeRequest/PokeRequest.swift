@@ -17,6 +17,7 @@ final class PokeRequest: ObservableObject {
     @Published var pokemonList: [Pokemon] = []
     
     func fetchPokemonData() async -> [Pokemon]? {
+        pokemonList = []
         print(#function, 1)
         let id = 10
         var urlList: [URL] = []
@@ -34,6 +35,7 @@ final class PokeRequest: ObservableObject {
                 print(#function, json)
                 pokemonList.append(json)
             }
+            dump(pokemonList)
             return pokemonList
 //            for i in 1..<id {
 //                let (data, _) = try await URLSession.shared.data(from: urlList[i])
