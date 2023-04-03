@@ -14,12 +14,12 @@ struct ContentView: View {
             TabAView()
                 .tabItem {
                     Image(systemName: "square.and.arrow.up")
-                    Text("PokopokeList")
+                    Text("List")
                 }
             TabBView()
                 .tabItem {
                     Image(systemName: "pencil.circle")
-                    Text("PokopokeCulom")
+                    Text("LazyGrid")
                 }
         }
     }
@@ -56,6 +56,11 @@ struct TabAView: View {
 
 
 struct TabBView: View {
+    
+    init () {
+        UITabBar.appearance().isHidden = false
+    }
+    
     @StateObject var pokeData = PokeRequest()
     var pokemonList: [Pokemon] = []
     private var columns: [GridItem] = Array(repeating: .init(.flexible(),
@@ -64,40 +69,12 @@ struct TabBView: View {
                                             count: 2)
     //    private var columns = [GridItem(.flexible()), GridItem(.flexible())]
     let screenWidth = UIScreen.main.bounds.width
-    //    var body: some View {
-    //        List(pokeData.pokemonList) { pokemon in
-    //            HStack {
-    //                ForEach(1..<2) { _ in
-    //                    AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
-    //                        image
-    //                            .resizable()
-    //                            .aspectRatio(contentMode: .fit)
-    //                            .frame(height: 40)
-    //                    } placeholder: {
-    //                        ProgressView()
-    //                    }
-    //                    Text(pokemon.name)
-    //                    NavigationLink(destination: PokeDetailView(pokemon: pokemon)) {
-    //
-    //                    }
-    //                }
-    //            }
-    //        }.onAppear {
-    //            Task {
-    //                await pokeData.fetchPokemonData()
-    //            }
-    //        }
-    //        .refreshable {
-    //                    await pokeData.fetchPokemonData()
-    //                }
-    //    }
     var body: some View {
         NavigationView {
             ScrollView(.vertical) {
                 LazyVGrid(columns: columns) {
                     ForEach((0..<pokeData.pokemonList.count), id: \.self) { index in
                         NavigationLink(destination: PokeDetailView(pokemon: pokeData.pokemonList[index])) {
-                            
                             AsyncImage(url: URL(string: pokeData.pokemonList[index].sprites.frontImage)) { image in
                                 image
                                     .resizable()
