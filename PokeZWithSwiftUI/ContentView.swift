@@ -10,115 +10,19 @@ import SwiftUI
 struct ContentView: View {
     
     var body: some View {
+        
         TabView {
-            TabAView()
+            PokemonListView()
                 .tabItem {
-                    Image(systemName: "square.and.arrow.up")
+                    Image(systemName: "rectangle.grid.1x2")
                     Text("List")
                 }
-            TabBView()
+            PokemonLazyVGridView()
                 .tabItem {
-                    Image(systemName: "pencil.circle")
+                    Image(systemName: "square.grid.2x2")
                     Text("LazyGrid")
                 }
         }
-    }
-}
-
-struct TabAView: View {
-    @StateObject var pokeData = PokeRequest()
-    var body: some View {
-        NavigationView {
-            List(pokeData.pokemonList) { pokemon in
-                HStack {
-                    
-                    AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 40)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    Text(pokemon.name)
-                    NavigationLink(destination: PokeDetailView(pokemon: pokemon)) {
-                        
-                    }
-                }
-            }.navigationBarTitle("一覧(List)")
-        }.onAppear {
-            Task {
-                await pokeData.fetchPokemonData()
-            }
-        }
-    }
-}
-
-
-struct TabBView: View {
-    
-    init () {
-        UITabBar.appearance().isHidden = false
-    }
-    
-    @StateObject var pokeData = PokeRequest()
-    var pokemonList: [Pokemon] = []
-    private var columns: [GridItem] = Array(repeating: .init(.flexible(),
-                                                             spacing: 10,
-                                                             alignment: .center),
-                                            count: 2)
-    //    private var columns = [GridItem(.flexible()), GridItem(.flexible())]
-    let screenWidth = UIScreen.main.bounds.width
-    var body: some View {
-        NavigationView {
-            ScrollView(.vertical) {
-                LazyVGrid(columns: columns) {
-                    ForEach((0..<pokeData.pokemonList.count), id: \.self) { index in
-                        NavigationLink(destination: PokeDetailView(pokemon: pokeData.pokemonList[index])) {
-                            AsyncImage(url: URL(string: pokeData.pokemonList[index].sprites.frontImage)) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height: 200)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                        }
-                    }
-                }
-            }.navigationBarTitle("一覧(GridLayout)")
-        }.onAppear {
-            Task {
-                await pokeData.fetchPokemonData()
-            }
-        }
-    }
-    mutating func getPokemon() async -> [Pokemon] {
-        await pokemonList =  pokeData.fetchPokemonData()!
-        return pokemonList
-    }
-}
-
-struct PokeDetailView: View {
-    let pokemon: Pokemon
-    var body: some View {
-        Text("No. \(pokemon.id)")
-            .font(.title)
-            .fontWeight(.semibold)
-        AsyncImage(url: URL(string: pokemon.sprites.frontImage)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 200)
-        } placeholder: {
-            ProgressView()
-        }
-        Text(pokemon.name)
-            .font(.body)
-            .fontWeight(.bold)
-        Text("\(pokemon.types[0].type.name)タイプ")
-            .font(.body)
-            .fontWeight(.bold)
     }
 }
 
