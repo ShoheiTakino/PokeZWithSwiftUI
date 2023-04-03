@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct PokemonModel: Codable {
-    
-}
-
 struct Pokemon: Decodable, Identifiable {
     let name: String
     let id: Int
